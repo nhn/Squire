@@ -38,6 +38,7 @@ var isIElt11 = /Trident\/[456]\./.test( ua );
 var isPresto = !!win.opera;
 var isEdge = /Edge\//.test( ua );
 var isWebKit = !isEdge && /WebKit\//.test( ua );
+var isIE = /Trident\/[4567]\./.test( ua );
 
 var ctrlKey = isMac ? 'meta-' : 'ctrl-';
 
@@ -2482,6 +2483,7 @@ proto.setConfig = function ( config ) {
             li: null,
             a: null
         },
+        leafNodeNames: leafNodeNames,
         undo: {
             documentSizeThreshold: -1, // -1 means no threshold
             undoLimit: -1 // -1 means no limit
@@ -2929,11 +2931,21 @@ proto._updatePathOnEvent = function () {
 
 proto.focus = function () {
     this._root.focus();
+
+    if ( isIE ) {
+        this.fireEvent( 'focus' );
+    }
+
     return this;
 };
 
 proto.blur = function () {
     this._root.blur();
+
+    if ( isIE ) {
+        this.fireEvent( 'blur' );
+    }
+
     return this;
 };
 
